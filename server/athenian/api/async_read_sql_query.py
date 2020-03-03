@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 import math
-from typing import Sequence, Union
+from typing import Optional, Sequence, Union
 
 import databases
 from numpy import datetime64
@@ -16,6 +16,7 @@ async def read_sql_query(sql: ClauseElement,
                          con: Union[databases.Database, databases.core.Connection],
                          columns: Union[Sequence[str], Sequence[InstrumentedAttribute],
                                         MetadataBase, StateBase],
+                         index: Optional[Union[str, Sequence[str]]] = None,
                          ) -> pd.DataFrame:
     """Read SQL query into a DataFrame.
 
@@ -28,6 +29,7 @@ async def read_sql_query(sql: ClauseElement,
     sql     : SQLAlchemy query object to be executed.
     con     : async SQLAlchemy database engine.
     columns : list of the resulting columns names, column objects or the model if SELECT *
+    index   : Name(s) of the index column(s).
 
     Returns
     -------
@@ -46,7 +48,7 @@ async def read_sql_query(sql: ClauseElement,
     else:
         if not isinstance(probe, str):
             columns = [c.key for c in columns]
-    frame = pd.DataFrame.from_records(data, columns=columns, coerce_float=True)
+    frame = pd.DataFrame.from_records(data, index=index, columns=columns, coerce_float=True)
     frame.replace(datetime(1, 1, 1, tzinfo=timezone.utc), math.nan, inplace=True)
     for col in frame.select_dtypes(include=[datetime64]):
         try:
