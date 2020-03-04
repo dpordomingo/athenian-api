@@ -1314,9 +1314,7 @@ components:
         values:
           description: Calculated metric values in the same order as `metrics`.
           items:
-# {% if False %}
-            allOf:
-# {% else %}{{ "\n" }}            oneOf:{% endif %}
+            oneOf:
             - type: integer
             - format: float
               type: number
@@ -1327,9 +1325,7 @@ components:
             It is optional because there can be exact metrics like "count open PRs
             per month".
           items:
-# {% if False %}
-            allOf:
-# {% else %}{{ "\n" }}            oneOf:{% endif %}
+            oneOf:
             - type: integer
             - format: float
               type: number
@@ -1340,9 +1336,7 @@ components:
             It is optional because there can be exact metrics like "count open PRs
             per month".
           items:
-# {% if False %}
-            allOf:
-# {% else %}{{ "\n" }}            oneOf:{% endif %}
+            oneOf:
             - type: integer
             - format: float
               type: number
